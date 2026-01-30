@@ -1,15 +1,43 @@
 name: ✨ Lint
 
-on: [push, pull_request]
+on:
+  - push
+  - pull_request
 
 jobs:
   lint:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # 6.0.1
-      - name: Run ESLint
-        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # 6.2.0
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6.2.0
         with:
-          node-version: "24"
-      - run: pnpm install eslint
-      - run: pnpm lint
+          node-version: 24
+
+      - uses: pnpm/action-setup@v4.2.0
+        name: Install pnpm
+        with:
+          version: 10.28.1
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v5.0.3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint codebase
+        run: pnpm lint
