@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "TheBestDeveloper",
