@@ -1,0 +1,29 @@
+name: Sync to Codeberg
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
+
+jobs:
+  codeberg:
+    if: github.repository == 'notthebestdev/no-arrows'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Add Codeberg to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan codeberg.org >> ~/.ssh/known_hosts
+
+      - uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: git@codeberg.org:justinn/no-arrows.git
+          ssh_private_key: ${{ secrets.CODEBERG_SSH_PRIVATE_KEY }}
