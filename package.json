@@ -20,6 +20,6 @@
     "husky": "^9.1.7",
     "jiti": "^2.7.0",
     "prettier": "^3.9.6",
-    "typescript-eslint": "^8.64.0"
+    "typescript-eslint": "^8.65.0"
   }
 }
