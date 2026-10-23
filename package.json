@@ -13,7 +13,7 @@
   "license": "MIT",
   "packageManager": "pnpm@10.28.1",
   "devDependencies": {
-    "@eslint/css": "^2.0.0",
+    "@eslint/css": "^2.0.1",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.12.0",
     "globals": "^17.13.0",
